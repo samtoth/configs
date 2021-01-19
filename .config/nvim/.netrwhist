@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/mnt/c/Users/sammy/Projects/brass-tuning/src'
+let g:netrw_dirhist_7='/home/sammy/Projects/nextjs-blog/components'
+let g:netrw_dirhist_6='/home/sammy/Projects/nextjs-blog'
+let g:netrw_dirhist_5='/home/sammy/Projects/nextjs-blog/pages'
+let g:netrw_dirhist_4='/home/sammy/Projects/nextjs-blog'
+let g:netrw_dirhist_3='/home/sammy/Projects/nextjs-blog/pages'
+let g:netrw_dirhist_2='/home/sammy/Projects/nextjs-blog'
+let g:netrw_dirhist_1='/home/sammy/Projects/nextjs-blog/.next'
+let g:netrw_dirhist_0='/home/sammy/Projects/nextjs-blog'
+let g:netrw_dirhist_9='/home/sammy/.oh-my-zsh/custom'
