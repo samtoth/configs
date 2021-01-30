@@ -1,11 +1,15 @@
 {
 "diagnostic.displayByAle": true,
   "coc.preferences.formatOnSaveFiletypes": [
+      "rust",
       "css",
       "markdown",
       "javascript",
       "typescript",
       "javascriptreact",
       "typescriptreact"
+  ],
+  "rust-analyzer.checkOnSave.command": [
+    "clippy"
   ]
 }

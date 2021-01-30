@@ -29,6 +29,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 
+Plug 'arcticicestudio/nord-vim'
 
 " Completion
 " ==============================================
@@ -63,14 +64,13 @@ command! -bang -nargs=? -complete=dir Files
  \                               'options': ['--tiebreak=index', '--preview']}, <bang>0)
 
 " modeline
-let g:airlie_theme='onedark'
+let g:airlie_theme='nord'
 let g:airline_powerline_fonts = 1
 
 " Completion
 " ==============================================
         " ALE
 	let g:ale_disable_lsp = 1
-
 
 	function! s:check_back_space() abort
 		  let col = col('.') - 1
@@ -119,7 +119,18 @@ let g:airline_powerline_fonts = 1
 	      expand('<cword>')
 	  endif
 	endfunction
-	
+  
+    xmap <leader>fm <Plug>(coc-format-selected)
+    nmap <leader>fm <Plug>(coc-format-selected)
+
+    " Code action
+    nmap <leader>ac <Plug>(coc-codeaction)
+
+
+    " Code Action for selected region
+    xmap <leader>a <Plug>(coc-codeaction-selected)
+    nmap <leader>a <Plug>(coc-codeaction-selected)
+
 	" Highlight the symbol and its references when
 	" holding the cursor.
 	autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -169,6 +180,7 @@ let g:sneak#snext=1
 " LOOK AND FEEL
 " ####################################################
 
+colorscheme nord
 set guioptions-=T " No toolbar
 set vb t_vb= " No beeping
 set relativenumber " Relative
@@ -263,9 +275,18 @@ nmap <leader>w :w<CR>
 map <leader>wq :wqa<CR>
 nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
+" XClip integration
+function! ClipboardYank()
+    call system('xclip -o -selection clipboard', @@)
+endfunction
+function! ClipboardPaste()
+    let @@ = system('xclip -o -selection clipboard')
+endfunction
 
+vnoremap <silent> y y:call ClipboardYank()<cr>
+vnoremap <silent> d d:cll ClipboardYank()<cr>
+nnoremap <silent> p :call ClipboardPaste()<cr>p
 
-" ##################################################
 " FOR EDITING VIMRC AUTORELOAD
 "
 map <leader>wv :source $MYVIMRC<CR>
