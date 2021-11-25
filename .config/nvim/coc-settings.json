@@ -1,15 +1,68 @@
 {
-"diagnostic.displayByAle": true,
-  "coc.preferences.formatOnSaveFiletypes": [
-      "rust",
-      "css",
-      "markdown",
-      "javascript",
-      "typescript",
-      "javascriptreact",
-      "typescriptreact"
-  ],
-  "rust-analyzer.checkOnSave.command": [
-    "clippy"
-  ]
+    "diagnostic.displayByAle": true,
+    "coc.preferences.formatOnSaveFiletypes": [
+        "rust",
+        "css",
+        "markdown",
+        "javascript",
+        "typescript",
+        "javascriptreact",
+        "typescriptreact",
+        "haskell",
+        "elm",
+        "json",
+        "jsonc",
+        "rescript"
+    ],
+    "rust-analyzer.checkOnSave.command": [
+        "clippy"
+    ],
+    "rust-analyzer.cargo.allFeatures": true,
+    "languageserver": {
+        "haskell": {
+            "command": "haskell-language-server-wrapper",
+            "args": [
+                "--lsp"
+            ],
+            "rootPatterns": [
+                "*.cabal",
+                "stack.yaml",
+                "cabal.project",
+                "package.yaml",
+                "hie.yaml"
+            ],
+            "filetypes": [
+                "haskell",
+                "lhaskell"
+            ]
+        },
+        "elmLS": {
+            "command": "elm-language-server",
+            "filetypes": [
+                "elm"
+            ],
+            "rootPatterns": [
+                "elm.json"
+            ],
+            "initializationOptions": {
+                "elmFormatPath": "elm-format",
+                "elmAnalyseTrigger": "save"
+            }
+        },
+        "rescript": {
+            "enable": true,
+            "module": "~/.config/nvim/plugged/vim-rescript/rescript-vscode/extension/server/out/server.js",
+            "args": [
+                "--node-ipc"
+            ],
+            "filetypes": [
+                "rescript"
+            ],
+            "rootPatterns": [
+                "bsconfig.json"
+            ]
+        }
+    },
+    "codeLens.enable": true,
+    "diagnostic.messageTarget": "float",
 }

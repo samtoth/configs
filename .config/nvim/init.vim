@@ -9,6 +9,9 @@ call plug#begin()
 Plug 'ciaranm/securemodelines' 
 Plug 'justinmk/vim-sneak'
 
+
+Plug 'sheerun/vim-polyglot'
+
 " modeline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -25,11 +28,17 @@ Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
-Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+Plug 'scrooloose/nerdtree'
 
-Plug 'arcticicestudio/nord-vim'
+Plug 'sainnhe/gruvbox-material'
+
+Plug 'preservim/nerdcommenter'
+
+Plug 'jiangmiao/auto-pairs'
+
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'ryanoasis/vim-devicons'
+Plug 'romgrk/barbar.nvim'
 
 " Completion
 " ==============================================
@@ -43,6 +52,7 @@ Plug 'arcticicestudio/nord-vim'
 	Plug 'rust-lang/rust.vim'
 	Plug 'rhysd/vim-clang-format'
 	Plug 'plasticboy/vim-markdown'
+    Plug 'rescript-lang/vim-rescript'
 " ==============================================
 call plug#end()
 
@@ -64,13 +74,17 @@ command! -bang -nargs=? -complete=dir Files
  \                               'options': ['--tiebreak=index', '--preview']}, <bang>0)
 
 " modeline
-let g:airlie_theme='nord'
+let g:airlie_theme='gruvbox-material'
 let g:airline_powerline_fonts = 1
+
 
 " Completion
 " ==============================================
         " ALE
 	let g:ale_disable_lsp = 1
+
+    let g:ale_rust_cargo_clippy_options =
+          \'-- -W clippy::nursery -W clippy::pedantic'
 
 	function! s:check_back_space() abort
 		  let col = col('.') - 1
@@ -124,21 +138,25 @@ let g:airline_powerline_fonts = 1
     nmap <leader>fm <Plug>(coc-format-selected)
 
     " Code action
-    nmap <leader>ac <Plug>(coc-codeaction)
+    nmap <leader>ac <Plug>(coc-codeaction-cursor)
 
 
     " Code Action for selected region
     xmap <leader>a <Plug>(coc-codeaction-selected)
     nmap <leader>a <Plug>(coc-codeaction-selected)
 
+    nmap  E <Plug>(coc-diagnostic-info)
+
 	" Highlight the symbol and its references when
 	" holding the cursor.
 	autocmd CursorHold * silent call CocActionAsync('highlight')
 	
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+
 	" Symbol renaming.
 	nmap <leader>rn <Plug>(coc-rename)
 
-        nmap <C-Space> <Plug>(coc-codeaction)
+    nmap <C-Space> <Plug>(coc-codeaction)
 
 	" Quickfix!
 	nmap <leader>qf <Plug>(coc-fix-current)
@@ -152,7 +170,7 @@ let g:airline_powerline_fonts = 1
 	let g:rustfmt_emit_files = 1
 	let g:rustfmt_fail_silently = 0
 
-
+    
     " Prettier
     "
     command! -nargs=0 Prettier :CocCommand prettier.formatFile
@@ -176,17 +194,39 @@ let g:secure_modelines_allowed_items = [
 " VIM SNEAK
 let g:sneak#snext=1
 
+" GIT CONFIG
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
+
+" fugitive git bindings
+nnoremap <space>ga :Git add %:p<CR><CR>
+nnoremap <space>gs :Gstatus<CR>
+nnoremap <space>gc :Gcommit -v -q<CR>
+nnoremap <space>gt :Gcommit -v -q %:p<CR>
+nnoremap <space>gd :Gdiff<CR>
+nnoremap <space>ge :Gedit<CR>
+nnoremap <space>gr :Gread<CR>
+nnoremap <space>gw :Gwrite<CR><CR>
+nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <space>gp :Ggrep<Space>
+nnoremap <space>gm :Gmove<Space>
+nnoremap <space>gb :Git branch<Space>
+nnoremap <space>go :Git checkout<Space>
+nnoremap <space>gps :Dispatch! git push<CR>
+nnoremap <space>gpl :Dispatch! git pull<CR>
+
 " ####################################################
 " LOOK AND FEEL
 " ####################################################
 
-colorscheme nord
+colorscheme gruvbox-material
 set guioptions-=T " No toolbar
 set vb t_vb= " No beeping
 set relativenumber " Relative
 set number	   " And Absolute numbers
 set colorcolumn=80 
 set mouse=a " Enable mouse usage ????
+set foldmethod=syntax
 
 set listchars=nbsp:¬,extends:»,precedes:«,trail:•
 
@@ -272,20 +312,23 @@ map <leader><leader> <c-^>
 map <leader>f :GFiles<CR>
 nmap <leader>; :Buffers<CR>
 nmap <leader>w :w<CR>
-map <leader>wq :wqa<CR>
+map <leader>wq :wq<CR>
 nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
-" XClip integration
-function! ClipboardYank()
-    call system('xclip -o -selection clipboard', @@)
-endfunction
-function! ClipboardPaste()
-    let @@ = system('xclip -o -selection clipboard')
-endfunction
+nnoremap <C-n> :NERDTreeToggle<CR>
 
-vnoremap <silent> y y:call ClipboardYank()<cr>
-vnoremap <silent> d d:cll ClipboardYank()<cr>
-nnoremap <silent> p :call ClipboardPaste()<cr>p
+
+"" XClip integration
+"function! ClipboardYank()
+    "call system('xclip -o -selection clipboard', @@)
+"endfunction
+"function! ClipboardPaste()
+    "let @@ = system('xclip -o -selection clipboard')
+"endfunction
+
+"vnoremap <silent> y y:call ClipboardYank()<cr>
+"vnoremap <silent> d d:cll ClipboardYank()<cr>
+"nnoremap <silent> p :call ClipboardPaste()<cr>p
 
 " FOR EDITING VIMRC AUTORELOAD
 "
